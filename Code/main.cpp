@@ -44,9 +44,9 @@ int main() {
     count_apply();
     count_complaint();
     struct stat buf;
-    if(stat("/DataFiles/personnel.dat", &buf) == -1) {
+    if(stat("../DataFiles/personnel.dat", &buf) == -1) {
         personnel P;
-        ofstream fout("/DataFiles/personnel.dat", ios::binary | ios::app);
+        ofstream fout("../DataFiles/personnel.dat", ios::binary | ios::app);
         if(!fout) {
             cout<<"Unable to open ";
             exit(0);
@@ -140,7 +140,7 @@ void staff_login() {
     staff S;
     char codename[20];
     int unit, flag = 0;
-    ifstream fin("/DataFiles/staff.dat", ios::binary);
+    ifstream fin("../DataFiles/staff.dat", ios::binary);
     if(!fin) {
         cout << "Something went wrong. Program terminated!!";
         exit(0);
@@ -225,7 +225,7 @@ void staffd(staff S) {
 void complaint(staff &S) {
     system("cls");
     staff st;
-    ifstream fin("/DataFiles/complaint.dat", ios::binary);
+    ifstream fin("../DataFiles/complaint.dat", ios::binary);
     if(!fin) {
         cout << "Something went wrong. Program terminated!!";
         exit(0);
@@ -247,7 +247,7 @@ void complaint(staff &S) {
     }
     else {
         cout << setw(50) << "STAFF COMPLAINTS\n\n\n\n\n";
-        ofstream fout("/DataFiles/complaint.dat", ios::binary | ios::app);
+        ofstream fout("../DataFiles/complaint.dat", ios::binary | ios::app);
         int opt;
         if(!fout) {
             cout << "Something went wrong. Program terminated!";
@@ -261,7 +261,7 @@ void complaint(staff &S) {
         fout.write((char*)&S,sizeof(S));
         fout.close();
         cc++;
-        update_record(S, "/DataFiles/staff.dat");
+        update_record(S, "../DataFiles/staff.dat");
         cout << "Press 1 to go back to dashboard or press 2 to terminate the program - ";
         cin >> ws >> opt;
         char buff[3];
@@ -286,7 +286,7 @@ void form() {
     system("cls");
     int opt;
     staff S;
-    ofstream fout("/DataFiles/apply.dat", ios::binary | ios::app);
+    ofstream fout("../DataFiles/apply.dat", ios::binary | ios::app);
     if(!fout) {
         cout<<"\nUnable to open the form currently. Try again later...";
         exit(0);
@@ -317,7 +317,7 @@ void form() {
 void perlogin() {
     system("cls");
     personnel P, check;
-    ifstream fin("/DataFiles/personnel.dat", ios::binary);
+    ifstream fin("../DataFiles/personnel.dat", ios::binary);
     int flag=0;
     if(!fin) {
         cout << "\nUnable to login in currently, please try again later...";
@@ -401,8 +401,8 @@ void apply(personnel P) {
     int opt;
     while(ca) {
         system("cls");
-        ifstream fin("/DataFiles/apply.dat", ios::binary);
-        ofstream fout("/DataFiles/staff.dat", ios::binary | ios::app);
+        ifstream fin("../DataFiles/apply.dat", ios::binary);
+        ofstream fout("../DataFiles/staff.dat", ios::binary | ios::app);
         if(!fin || !fout) {
             cout << "Something went wrong. Program terminated!!";
             exit(0);
@@ -424,7 +424,7 @@ void apply(personnel P) {
             }
             fin.close();
             fout.close();
-            delete_record(S, "/DataFiles/apply.dat");
+            delete_record(S, "../DataFiles/apply.dat");
             ca --;
         }
         else {
@@ -483,7 +483,7 @@ void comp(personnel P) {
     staff S;
     while(cc) {
         system("cls");
-        ifstream fin("/DataFiles/complaint.dat", ios::binary);
+        ifstream fin("../DataFiles/complaint.dat", ios::binary);
         if(!fin) {
             cout << "\nUnable to open";
             exit(0);
@@ -508,14 +508,14 @@ void comp(personnel P) {
             fin.close();
             if(!strcmpi(ch, "yes")) {
                 S.com = 1;
-                delete_record(S, "/DataFiles/complaint.dat");
-                update_record(S, "/DataFiles/staff.dat");
+                delete_record(S, "../DataFiles/complaint.dat");
+                update_record(S, "../DataFiles/staff.dat");
                 cc--;
             }
             else {
                 S.fired=1;
-                update_record(S, "/DataFiles/staff.dat");
-                delete_record(S, "/DataFiles/complaint.dat");
+                update_record(S, "../DataFiles/staff.dat");
+                delete_record(S, "../DataFiles/complaint.dat");
                 cc--;
                 cs--;
             }
@@ -576,7 +576,7 @@ void view_staff_login(personnel P) {
     fgets(code, 20, stdin);
     int l = strlen(code);
     code[l - 1] = '\0';
-    ifstream fin("/DataFiles/staff.dat", ios::binary);
+    ifstream fin("../DataFiles/staff.dat", ios::binary);
     if(!fin) {
         cout << "Something went wrong. Program terminated!!";
         exit(0);
@@ -630,8 +630,8 @@ void view_staff(staff S,personnel P) {
     case 2:
         S.fired = 1;
         system("cls");
-        delete_record(S, "/DataFiles/complaint.dat");
-        update_record(S, "/DataFiles/staff.dat");
+        delete_record(S, "../DataFiles/complaint.dat");
+        update_record(S, "../DataFiles/staff.dat");
         cs --;
         cc = 0;
         count_complaint();
@@ -679,7 +679,7 @@ void view_staff(staff S,personnel P) {
 void delete_record(staff S,const char* file) {
     staff st;
     ifstream fin(file, ios::binary);
-    ofstream fout("/DataFiles/temp.dat", ios::binary | ios::trunc);
+    ofstream fout("../DataFiles/temp.dat", ios::binary | ios::trunc);
     if(!fin||!fout) {
         cout << "\nSomething went wrong. Program terminated!!";
         exit(0);
@@ -692,7 +692,7 @@ void delete_record(staff S,const char* file) {
     fin.close();
     fout.close();
     remove(file);
-    rename("/DataFiles/temp.dat", file);
+    rename("../DataFiles/temp.dat", file);
 }
 
 void update_record(staff S, const char* file) {
@@ -718,15 +718,15 @@ void update_record(staff S, const char* file) {
 void count_staff() {
     staff S;
     struct stat buf;
-    if(stat("/DataFiles/staff.dat", &buf) == -1) {
-        ofstream fout("/DataFiles/staff.dat", ios::binary | ios::app);
+    if(stat("../DataFiles/staff.dat", &buf) == -1) {
+        ofstream fout("../DataFiles/staff.dat", ios::binary | ios::app);
         if(!fout) {
             cout<<"Unable to open ";
             exit(0);
         }
         fout.close();
     }
-    ifstream fin("/DataFiles/staff.dat", ios::binary);
+    ifstream fin("../DataFiles/staff.dat", ios::binary);
     if(!fin) {
         cout << "Unable to open ";
         exit(0);
@@ -741,15 +741,15 @@ void count_staff() {
 void count_apply() {
     staff S;
     struct stat buf;
-    if(stat("/DataFiles/apply.dat", &buf) == -1) {
-        ofstream fout("/DataFiles/apply.dat", ios::binary | ios::app);
+    if(stat("../DataFiles/apply.dat", &buf) == -1) {
+        ofstream fout("../DataFiles/apply.dat", ios::binary | ios::app);
         if(!fout) {
             cout<<"Unable to open ";
             exit(0);
         }
         fout.close();
     }
-    ifstream fin("/DataFiles/apply.dat", ios::binary);
+    ifstream fin("../DataFiles/apply.dat", ios::binary);
     if(!fin) {
         cout << "Unable to open";
         exit(0);
@@ -762,15 +762,15 @@ void count_apply() {
 void count_complaint() {
     staff S;
     struct stat buf;
-    if(stat("/DataFiles/complaint.dat", &buf) == -1) {
-        ofstream fout("/DataFiles/complaint.dat", ios::binary | ios::app);
+    if(stat("../DataFiles/complaint.dat", &buf) == -1) {
+        ofstream fout("../DataFiles/complaint.dat", ios::binary | ios::app);
         if(!fout) {
             cout<<"Unable to open ";
             exit(0);
         }
         fout.close();
     }
-    ifstream fin("/DataFiles/complaint.dat", ios::binary);
+    ifstream fin("../DataFiles/complaint.dat", ios::binary);
     if(!fin) {
         cout << "Unable to open";
         exit(0);

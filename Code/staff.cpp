@@ -50,7 +50,7 @@ void staff::accept() {
     char buff[3];
     fgets(buff, 3, stdin);
     staff S;
-    ifstream fin("/DataFiles/staff.dat", ios::binary);
+    ifstream fin("../DataFiles/staff.dat", ios::binary);
     if(!fin) {
         cout << "Something went wrong. Program terminated!!";
         exit(0);
@@ -64,7 +64,7 @@ void staff::accept() {
         }
     }
     fin.close();
-    ifstream fin2("/DataFiles/apply.dat", ios::binary);
+    ifstream fin2("../DataFiles/apply.dat", ios::binary);
     if(!fin2) {
         cout << "Something went wrong. Program terminated!!";
         exit(0);
